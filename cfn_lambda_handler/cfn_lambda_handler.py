@@ -98,7 +98,7 @@ def resolve(reference):
 def walk(data):
   result = {}
   if type(data) is dict:
-    for k,v in data.items():
+    for k,v in list(data.items()):
       result[k] = walk(v)
   elif type(data) is list:
     items = []
@@ -114,7 +114,7 @@ def walk(data):
 def sanitize(response, secure_attributes):
   if response.get('Data'):
     sanitized = deepcopy(response)
-    sanitized['Data'] = {k:'*******' if k in secure_attributes else v for k,v in sanitized['Data'].items() }
+    sanitized['Data'] = {k:'*******' if k in secure_attributes else v for k,v in list(sanitized['Data'].items()) }
     return json.dumps(sanitized, default=date_handler)
   else:
     return json.dumps(response, default=date_handler)
